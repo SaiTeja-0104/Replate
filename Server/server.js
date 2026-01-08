@@ -14,6 +14,7 @@ app.use(express.json());
 const corsOptions = {
   origin: [
     "http://localhost:5173", 
+    "https://replate-mauve.vercel.app/"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
@@ -25,9 +26,12 @@ app.options("*", cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", 
+    origin: [
+    "http://localhost:5173", 
+    "https://replate-mauve.vercel.app/"
+    ],
     methods: ["GET", "POST"],
-  },
+  }
 });
 
 
