@@ -19,7 +19,7 @@ const NgoProvider = (props) => {
 
     const allDonations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/donation/all`);
+            const response = await axios.get(`${backendUrl}/donation/all`);
             setAvailableDonations(response.data);
         } catch (error) {
             toast.error(error.response?.data || error.message);

@@ -8,13 +8,13 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import Ngo from './pages/Ngo'
 import Donor from './pages/Donor'
-import Unauthorized from './pages/Unauthorized'
+import ProtectedRoute from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
 
 const App = () => {
   const loc = useLocation();
   const show = !loc.pathname.includes('/donor') && !loc.pathname.includes('/ngo') && !loc.pathname.includes('/register')
-  const {userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   return (
     <div>
       <Toaster />
@@ -23,8 +23,22 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/donor/*' element={userData?.role === "donor" ? <Donor /> : <Unauthorized />} />
-        <Route path='/ngo/*' element={userData?.role === "ngo" ? <Ngo /> : <Unauthorized />} />
+        <Route path="/donor/*"
+          element={
+            <ProtectedRoute role="donor" userData={userData}>
+              <Donor />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/ngo/*"
+          element={
+            <ProtectedRoute role="ngo" userData={userData}>
+              <Ngo />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
       {show && <Footer />}
     </div>

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useEffect, } from 'react';
 import { toast } from 'react-hot-toast';
 
-
 export const UserContext = createContext()
 
 const UserProvider = (props) => {
@@ -11,10 +10,14 @@ const UserProvider = (props) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [userData, setUserData] = useState({});
     const [role, setRole] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (token) {
             validateToken();
+        }
+        else{
+            setLoading(false);
         }
     }, []);
 
@@ -25,7 +28,7 @@ const UserProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            getUserData();
+            await getUserData();
         } catch (error) {
             setToken(null);
             localStorage.removeItem('token');
@@ -33,6 +36,7 @@ const UserProvider = (props) => {
             setTimeout(() => {
                 window.location.href = '/register';
             }, 2000)
+            setLoading(false);
         }
     }
 
@@ -49,13 +53,16 @@ const UserProvider = (props) => {
         } catch (error) {
             toast.error(error.response?.data || error.message);
         }
+        finally {
+            setLoading(false);
+        }
     }
 
 
 
 
     const value = {
-        token, setToken, backendUrl, userData, role, setUserData
+        token, setToken, backendUrl, userData, role, setUserData,loading
     }
 
     return <UserContext.Provider value={value}>{props.children}</UserContext.Provider>
