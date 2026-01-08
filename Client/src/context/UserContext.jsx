@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useEffect, } from 'react';
 import { toast } from 'react-hot-toast';
 
+
 export const UserContext = createContext()
 
 const UserProvider = (props) => {
-    const backendUrl = "http://localhost:3000";
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [userData, setUserData] = useState({});
     const [role, setRole] = useState('');
