@@ -10,6 +10,7 @@ import Ngo from './pages/Ngo'
 import Donor from './pages/Donor'
 import ProtectedRoute from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
+import { Analytics } from "@vercel/analytics/next"
 
 const App = () => {
   const loc = useLocation();
@@ -19,6 +20,7 @@ const App = () => {
     <div>
       <Toaster />
       <ScrollToTop />
+      <Analytics />
       {show && <Navbar />}
       <Routes>
         <Route path='/' element={<Home />} />
