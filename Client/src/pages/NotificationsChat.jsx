@@ -133,18 +133,18 @@ const NotificationsChat = ({ role = "donor" }) => {
       </div>
 
       {/* INPUT BAR */}
-      <div className="border-t px-2 sm:px-4 py-3 flex gap-3">
+      <div className="border-t px-2 sm:px-4 py-3 flex flex-wrap gap-2">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 px-3 sm:px-4 py-2 border rounded-full outline-none focus:ring-2"
+          className="flex-1 min-w-[70%] px-3 py-2 border rounded-full outline-none focus:ring-2"
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
           onClick={sendMessage}
-          className="px-4 sm:px-6 py-2 rounded-full text-white font-medium transition"
+          className="px-4 py-2 rounded-full text-white font-medium transition shrink-0"
           style={{ backgroundColor: theme.primary }}
         >
           Send
