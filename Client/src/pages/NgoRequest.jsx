@@ -59,27 +59,27 @@ const NgoRequest = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 px-8 font-pop">
+    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 font-pop bg-gray-50">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-        <h1 className="text-3xl font-bold text-[#14532D]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#14532D]">
           Active Donations
         </h1>
 
-        <div className="relative mt-4 md:mt-0">
+        <div className="relative w-full sm:w-72">
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
           <input
             type="text"
             placeholder="Search by donor or item..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 pr-2 py-2 border border-[#B7E4C7] rounded-lg outline-none focus:ring-2 focus:ring-[#43A047] w-72"
+            className="w-full pl-10 pr-2 py-2 text-sm sm:text-base border border-[#B7E4C7] rounded-lg outline-none focus:ring-2 focus:ring-[#43A047]"
           />
         </div>
       </div>
 
       {/* Grid */}
-      <div className="pt-2 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDonations.length ? (
           filteredDonations.map((donation) => {
             const timeLeft = getTimeLeft(donation.expiryDate);
@@ -95,8 +95,7 @@ const NgoRequest = () => {
                 ? "bg-yellow-100 text-yellow-800"
                 : "bg-green-100 text-green-700";
 
-            const claimed =
-              donation.quantity - donation.availableQuantity;
+            const claimed = donation.quantity - donation.availableQuantity;
             const percent = donation.quantity
               ? (claimed / donation.quantity) * 100
               : 0;
@@ -107,14 +106,14 @@ const NgoRequest = () => {
                 className="relative bg-white rounded-xl shadow-md border border-[#B7E4C7] hover:shadow-lg transition-all overflow-hidden"
               >
                 {/* CONTENT */}
-                <div className="p-5">
+                <div className="p-4 sm:p-5">
                   {/* Top */}
                   <div className="flex justify-between items-center mb-3">
-                    <h2 className="text-lg font-semibold text-[#14532D]">
+                    <h2 className="text-base sm:text-lg font-semibold text-[#14532D]">
                       {donation.name}
                     </h2>
                     <span
-                      className={`px-3 py-1 flex items-center rounded-full text-xs font-medium ${urgencyColor}`}
+                      className={`px-2 sm:px-3 py-1 flex items-center rounded-full text-xs font-medium ${urgencyColor}`}
                     >
                       <FaClock className="mr-1" />
                       {hours}h : {mins}m
@@ -125,9 +124,7 @@ const NgoRequest = () => {
                   <div className="space-y-2 text-gray-700 text-sm px-1">
                     <p className="flex items-center gap-2">
                       <FaUser className="text-[#43A047]" />
-                      <span className="font-medium">
-                        {donation.donorName}
-                      </span>
+                      <span className="font-medium">{donation.donorName}</span>
                     </p>
                     <p className="flex items-center gap-2">
                       <FaBox className="text-[#43A047]" />
@@ -140,9 +137,9 @@ const NgoRequest = () => {
                   </div>
 
                   {/* Action */}
-                  <div className="mt-6">
+                  <div className="mt-4 sm:mt-6">
                     <Link to={`./${donation._id}/form`}>
-                      <button className="w-full px-4 py-2 bg-[#43A047] text-white text-sm font-medium rounded-lg hover:bg-[#2E7D32] transition-all">
+                      <button className="w-full px-3 sm:px-4 py-2 bg-[#43A047] text-white text-sm font-medium rounded-lg hover:bg-[#2E7D32] transition-all">
                         Request Pickup
                       </button>
                     </Link>
@@ -162,7 +159,7 @@ const NgoRequest = () => {
             );
           })
         ) : (
-          <p className="text-gray-500 text-center col-span-3">
+          <p className="text-gray-500 text-center col-span-1 sm:col-span-2 lg:col-span-3">
             No active donations found.
           </p>
         )}

@@ -1,17 +1,15 @@
 import React, { useEffect, useContext, useState } from "react";
 import { FaUser, FaBoxOpen, FaClipboardList, FaMailBulk, FaPhone } from "react-icons/fa";
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-
 const RequestForm = () => {
-
-  const { token, backendUrl } = useContext(UserContext);
+  const { token, backendUrl, userData } = useContext(UserContext);
   const { rid } = useParams();
   const [data, setDonationData] = useState(null);
-  const [quantity, setQuantity] = useState(data?.availableQuantity || "");
+  const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
     const getDetails = async () => {
@@ -20,76 +18,70 @@ const RequestForm = () => {
         setDonationData(res.data);
         setQuantity(res.data.availableQuantity);
       } catch (err) {
-        toast.error("Error fetching donation:", err);
+        toast.error("Error fetching donation");
       }
     };
     getDetails();
   }, [rid]);
 
+  const handleChange = (e) => setQuantity(e.target.value);
 
-  // ✅ handle input change
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setQuantity(value);
-  };
-
-  // ✅ handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put(`${backendUrl}/ngo/claim_request/${rid}`,
+      await axios.put(
+        `${backendUrl}/ngo/claim_request/${rid}`,
         { quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(res.data);
       toast.success("Request submitted successfully!");
       setQuantity("");
       setTimeout(() => {
-        window.location.href = '/ngo/requestSupplies';
+        window.location.href = "/ngo/requestSupplies";
       }, 1500);
     } catch (error) {
       toast.error("Failed to submit request!");
     }
   };
 
-  const { userData } = useContext(UserContext);
-
   return (
-    <div className="min-h-screen flex justify-center items-center py-6 px-6 font-pop">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-md border border-[#B7E4C7] p-8">
+    <div className="min-h-screen flex justify-center items-center py-4 px-3 sm:px-6 font-pop bg-gray-50">
+      <div className="w-full max-w-md sm:max-w-lg bg-white rounded-xl shadow-md border border-[#B7E4C7] p-6 sm:p-8">
         {/* Header */}
-        <h2 className="text-2xl font-bold text-[#14532D] mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#14532D] mb-6 text-center">
           Create New Request
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           {/* Donation ID */}
-          <div className="pt-4 flex items-center gap-3 text-lg">
+          <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
             <FaClipboardList className="text-[#43A047]" />
-            <div className="font-medium text-[#14532D] ">
-              Food Item : <span className="text-gray-400 ">{data?.name}</span>
+            <div className="font-medium text-[#14532D]">
+              Food Item : <span className="text-gray-400">{data?.name}</span>
             </div>
           </div>
-          <div className="pt-2 flex items-center gap-3 text-lg">
+
+          {/* NGO Name */}
+          <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
             <FaUser className="text-[#43A047]" />
-            <div className="font-medium text-[#14532D] ">
-              NGO Name : <span className="text-gray-400 ">{userData.name}</span>
+            <div className="font-medium text-[#14532D]">
+              NGO Name : <span className="text-gray-400">{userData?.name}</span>
             </div>
           </div>
-          <div className="pt-2  flex items-center gap-3 text-lg">
+
+          {/* Email */}
+          <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
             <FaMailBulk className="text-[#43A047]" />
-            <div className="font-medium text-[#14532D] ">
-              Email Id : <span className="text-gray-400">{userData.email}</span>
+            <div className="font-medium text-[#14532D]">
+              Email Id : <span className="text-gray-400">{userData?.email}</span>
             </div>
           </div>
-          <div className="pt-2 pb-2 flex items-center gap-3 text-lg">
+
+          {/* Mobile */}
+          <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
             <FaPhone className="text-[#43A047] rotate-90" />
-            <div className="font-medium text-[#14532D] ">
-              Mobile Number : <span className="text-gray-400">{userData.mobile}</span>
+            <div className="font-medium text-[#14532D]">
+              Mobile Number : <span className="text-gray-400">{userData?.mobile}</span>
             </div>
           </div>
 
@@ -109,17 +101,15 @@ const RequestForm = () => {
                 min="1"
                 max={data?.availableQuantity}
                 required
-                className="w-full pl-10 pr-4 py-2 border border-[#B7E4C7] rounded-lg outline-none focus:ring-2 focus:ring-[#43A047]"
+                className="w-full pl-10 pr-4 py-2 text-sm sm:text-base border border-[#B7E4C7] rounded-lg outline-none focus:ring-2 focus:ring-[#43A047]"
               />
             </div>
           </div>
 
-
-
           {/* Submit */}
           <button
             type="submit"
-            className="w-full py-2.5 mt-4 bg-[#43A047] text-white font-semibold rounded-lg hover:bg-[#2E7D32] transition-all shadow-sm"
+            className="w-full py-2 sm:py-2.5 mt-4 bg-[#43A047] text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-[#2E7D32] transition-all shadow-sm"
           >
             Submit Request
           </button>
