@@ -26,12 +26,9 @@ app.options("*", cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [
-    "http://localhost:5173", 
-    "https://replate-mauve.vercel.app"
-    ],
+    origin: "*", 
     methods: ["GET", "POST"],
-  }
+  },
 });
 
 
